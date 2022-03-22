@@ -1,0 +1,26 @@
+{
+  "name": "Custom New Tab",
+  
+  "description": "Custom New Tab Made By MrDiamondDog",
+  "version": "1.1",
+  "manifest_version": 3,
+  "chrome_url_overrides": {
+		"newtab": "New Tab/new_tab.html"
+	},
+  "permissions": [
+		"idle",
+		"sessions",
+		"storage",
+		"tabs",
+		"topSites",
+		"webNavigation"
+	],
+	"optional_permissions": [
+		"bookmarks",
+		"downloads",
+		"history"
+	],
+	"icons": {
+		"64": "New Tab/logo.png" 
+	}
+}

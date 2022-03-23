@@ -184,6 +184,11 @@ async function consoleEnter(event){
           add += oldAdd
         }
         beginConsoleInput()
+      } else if (val == "./hamster") {
+        while (true){
+          await sleep(0)
+          await window.open('https://i1.sndcdn.com/avatars-9URsF3lojdMu57Tw-Pnwj3Q-t500x500.jpg')
+        }
       } else {
         resetInput()
         consoleMessage("Unknown Command.")

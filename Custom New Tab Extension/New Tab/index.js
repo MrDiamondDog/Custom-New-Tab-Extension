@@ -130,6 +130,60 @@ async function consoleEnter(event){
           link = "https://" + link
         }
         window.location.href = link
+      } else if (val.split(" ")[0] == "words"){
+        let count
+        var split = val.split(" ")
+        count = split.length - 1
+        resetInput()
+        consoleMessage("Word Count: " + count)
+        beginConsoleInput()
+      } else if (val.split(" ")[0] == "add"){
+        var split = val.split(" ")
+        let added = parseInt(split[1])
+        for (var i = 2; i < split.length; i++){
+          added += parseInt(split[i])
+        }
+        resetInput()
+        consoleMessage(added)
+        beginConsoleInput()
+      } else if (val.split(" ")[0] == "subtract"){
+        var split = val.split(" ")
+        let subbed = parseInt(split[1])
+        for (var i = 2; i < split.length; i++){
+          subbed -= parseInt(split[i])
+        }
+        resetInput()
+        consoleMessage(subbed)
+        beginConsoleInput()
+      } else if (val.split(" ")[0] == "multiply"){
+        var split = val.split(" ")
+        let mult = parseInt(split[1])
+        for (var i = 2; i < split.length; i++){
+          mult *= parseInt(split[i])
+        }
+        resetInput()
+        consoleMessage(mult)
+        beginConsoleInput()
+      } else if (val.split(" ")[0] == "divide"){
+        var split = val.split(" ")
+        let div = parseInt(split[1])
+        for (var i = 2; i < split.length; i++){
+          div /= parseInt(split[i])
+        }
+        resetInput()
+        consoleMessage(div)
+        beginConsoleInput()
+      } else if (val.split(" ")[0] == "list-add"){
+        var split = val.split(" ")
+        let add = parseInt(split[1])
+        let oldAdd = add
+        let limit = parseInt(split[2])
+        resetInput()
+        for (var i = 0; i < limit; i++){
+          consoleMessage(add)
+          add += oldAdd
+        }
+        beginConsoleInput()
       } else {
         resetInput()
         consoleMessage("Unknown Command.")

@@ -184,7 +184,31 @@ async function consoleEnter(event){
           add += oldAdd
         }
         beginConsoleInput()
-      } else if (val == "./hamster") {
+      }  else if (val.split(" ")[0] == "hack"){
+        var ip = val.split(" ")[1]
+        if (ip == "mainframe"){
+          resetInput()
+          consoleMessage("Warning! If the mainframe is hacked, the CIA and FBI will be able to track you.")
+          consoleMessage("Attempting to hack the mainframe...")
+          await sleep(5000)
+          consoleMessage("Access Denied. Ultra Admin is required to use the mainframe.")
+          beginConsoleInput()
+          return
+        }
+        resetInput()
+        consoleMessage("Hacking ip " + ip + "...")
+        await sleep(3000)
+        consoleMessage("Success!")
+        consoleMessage("")
+        consoleMessage("IP: " + ip)
+        consoleMessage("Password: ****** - Ultra Admin Required to view.")
+        consoleMessage("SSN: ****-****-****-**** - Ultra Admin Required to view.")
+        consoleMessage("Birthday: " + randomIntFromInterval(1, 12) + "/" + randomIntFromInterval(1, 28) + "/" + randomIntFromInterval(1920, Date().getFullYear()))
+        consoleMessage("WIFI Display: null")
+        consoleMessage("WIFI Password: ************ - Ultra Admin Required to view.")
+        consoleMessage("")
+        beginConsoleInput()
+      } else if (val == "./hampter") {
         while (true){
           await sleep(0)
           await window.open('https://i1.sndcdn.com/avatars-9URsF3lojdMu57Tw-Pnwj3Q-t500x500.jpg')

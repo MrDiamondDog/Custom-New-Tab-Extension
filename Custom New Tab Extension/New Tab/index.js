@@ -115,14 +115,20 @@ async function consoleEnter(event){
         beginConsoleInput()
       } else if (val == "help"){
         resetInput()
-        consoleMessage("./[launcher] - Opens a page from the filesystem. [launcher]: page | Avalible Pages: 'autoblink'")
-        consoleMessage("ide | code | python - Opens an online python ide.")
-        consoleMessage("print | echo [message] - Prints [message].")
-        consoleMessage("clear - Clears localStorage. [REQUIRES REFRESH]")
-        consoleMessage("get-ls-data - Prints data from localStorage.")
-        consoleMessage("refresh - Refreshes the tab.")
-        consoleMessage("temp-new-tab [link] [minutes] - Opens [link] for [minutes]. After [minutes] has passed, it closes.")
-        consoleMessage("help - Prints this page.")
+        // print all the commands with their descriptions and arguments
+        consoleMessage("Commands:")
+        consoleMessage("help - shows this message")
+        consoleMessage("print <text> - prints text to the console")
+        consoleMessage("echo <text> - prints text to the console")
+        consoleMessage("clear - clears local storage")
+        consoleMessage("get-ls-data - gets data from local storage")
+        consoleMessage("refresh - refreshes the page")
+        consoleMessage("hacker - makes the console output a random number every 10 seconds")
+        consoleMessage("temp-new-tab <link> <time> - opens a new tab for the link for the time specified in minutes")
+        consoleMessage("virus - closes the tab")
+        consoleMessage("ide - opens the python IDE")
+        consoleMessage("code - opens the python IDE")
+        consoleMessage("python - opens the python IDE")
         beginConsoleInput()
       } else if (val.split(" ")[0] == "open"){
         var link = val.split(" ")[1]
@@ -131,22 +137,27 @@ async function consoleEnter(event){
         }
         window.location.href = link
       } else if (val.split(" ")[0] == "words"){
-        let count
-        var split = val.split(" ")
-        count = split.length - 1
-        resetInput()
-        consoleMessage("Word Count: " + count)
-        beginConsoleInput()
-      } else if (val.split(" ")[0] == "add"){
-        var split = val.split(" ")
-        let added = parseInt(split[1])
-        for (var i = 2; i < split.length; i++){
-          added += parseInt(split[i])
+        // print the amount of words and characters in all the next arguments
+        var splitted = val.split(" ")
+        var built = "";
+        for (var i = 1; i < splitted.length; i++){
+          built += splitted[i] + " "
         }
         resetInput()
-        consoleMessage(added)
+        consoleMessage("Words: " + built.split(" ").length)
+        consoleMessage("Characters: " + built.length)
         beginConsoleInput()
-      } else if (val.split(" ")[0] == "subtract"){
+      } else if (val.split(" ")[0] == "add"){
+        // print the sum of all the next arguments
+        var splitted = val.split(" ")
+        var built = 0;
+        for (var i = 1; i < splitted.length; i++){
+          built += parseInt(splitted[i])
+        }
+        resetInput()
+        consoleMessage("Sum: " + built)
+        beginConsoleInput()
+      } else if (val.split(" ")[0] == "subtract") {
         var split = val.split(" ")
         let subbed = parseInt(split[1])
         for (var i = 2; i < split.length; i++){
@@ -173,6 +184,12 @@ async function consoleEnter(event){
         resetInput()
         consoleMessage(div)
         beginConsoleInput()
+      } else if (val.split(" ")[0] == "sqrt"){
+        var split = val.split(" ")
+        let sqrt = parseInt(split[1])
+        resetInput()
+        consoleMessage(Math.sqrt(sqrt))
+        beginConsoleInput()
       } else if (val.split(" ")[0] == "list-add"){
         var split = val.split(" ")
         let add = parseInt(split[1])
@@ -185,34 +202,105 @@ async function consoleEnter(event){
         }
         beginConsoleInput()
       }  else if (val.split(" ")[0] == "hack"){
-        var ip = val.split(" ")[1]
-        if (ip == "mainframe"){
-          resetInput()
-          consoleMessage("Warning! If the mainframe is hacked, the CIA and FBI will be able to track you.")
-          consoleMessage("Attempting to hack the mainframe...")
-          await sleep(5000)
-          consoleMessage("Access Denied. Ultra Admin is required to use the mainframe.")
-          beginConsoleInput()
-          return
+        // hack the website
+        var splitted = val.split(" ")
+        var built = ""
+        for (var i = 1; i < splitted.length; i++){
+          built += splitted[i] + " "
         }
         resetInput()
-        consoleMessage("Hacking ip " + ip + "...")
+        consoleMessage("Hacking...")
         await sleep(3000)
-        consoleMessage("Success!")
-        consoleMessage("")
-        consoleMessage("IP: " + ip)
-        consoleMessage("Password: ****** - Ultra Admin Required to view.")
-        consoleMessage("SSN: ****-****-****-**** - Ultra Admin Required to view.")
-        consoleMessage("Birthday: " + randomIntFromInterval(1, 12) + "/" + randomIntFromInterval(1, 28) + "/" + randomIntFromInterval(1920, Date().getFullYear()))
-        consoleMessage("WIFI Display: null")
-        consoleMessage("WIFI Password: ************ - Ultra Admin Required to view.")
-        consoleMessage("")
+        consoleMessage("Hacked! Opening website...")
+        await sleep(100)
+        var tab = window.open(built)
+        tab.alert("This website has been hacked!")
+        var element = tab.document.createElement("iframe", {width: 560, height: 315, src: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1", frameborder: 0, allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"})
+        tab.document.body.appendChild(element)
         beginConsoleInput()
       } else if (val == "./hampter") {
         while (true){
           await sleep(0)
           await window.open('https://i1.sndcdn.com/avatars-9URsF3lojdMu57Tw-Pnwj3Q-t500x500.jpg')
         }
+      } else if (val.split(" ")[0] == "setstoragekey"){
+        // Command to set a localStorage item
+        var split = val.split(" ")
+        var key = split[1]
+        var val = split[2]
+        localStorage.setItem(key, val)
+        resetInput()
+        consoleMessage("Set " + key + " to " + val + ".")
+        beginConsoleInput()
+      } else if (val.split(" ")[0] == "clearstoragekey"){
+        // Command to clear a localStorage item
+        var key = val.split(" ")[1]
+        localStorage.removeItem(key)
+        resetInput()
+        consoleMessage("Cleared " + key + ".")
+        beginConsoleInput()
+      } else if (val.split(" ")[0] == "getstoragekey"){
+        // Command to get a localStorage item
+        var key = val.split(" ")[1]
+        resetInput()
+        consoleMessage(localStorage.getItem(key))
+        beginConsoleInput()
+      } else if (val == "./rickroll"){
+        resetInput()
+        consoleMessage("<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\"></iframe>")
+        beginConsoleInput()
+      } else if (val == "./get-free-robux"){
+        resetInput()
+        consoleMessage("Getting free Robux...")
+        await sleep(3000)
+        consoleMessage("Success!")
+        consoleMessage("")
+        consoleMessage("Robux: " + randomIntFromInterval(1, 1000000))
+        consoleMessage("")
+        beginConsoleInput()
+      } else if (val == "./get-free-vbucks"){
+        resetInput()
+        consoleMessage("Getting free V-Bucks...")
+        await sleep(3000)
+        consoleMessage("Success!")
+        consoleMessage("")
+        consoleMessage("V-Bucks: " + randomIntFromInterval(1, 1000000))
+        consoleMessage("")
+        beginConsoleInput()
+      } else if (val == "./get-free-diamonds"){
+        resetInput()
+        consoleMessage("Getting free Diamonds...")
+        await sleep(3000)
+        consoleMessage("Success!")
+        consoleMessage("")
+        consoleMessage("Diamonds: " + randomIntFromInterval(1, 1000000))
+        consoleMessage("")
+        beginConsoleInput()
+      } else if (val == "./get-free-coins"){
+        resetInput()
+        consoleMessage("Getting free Coins...")
+        await sleep(3000)
+        consoleMessage("Success!")
+        consoleMessage("")
+        consoleMessage("Coins: " + randomIntFromInterval(1, 1000000))
+        consoleMessage("")
+        beginConsoleInput()
+      } else if (val == "./get-free-tokens"){
+        resetInput()
+        consoleMessage("Getting free Tokens...")
+        await sleep(3000)
+        consoleMessage("Success!")
+        consoleMessage("")
+        consoleMessage("Tokens: " + randomIntFromInterval(1, 1000000))
+        consoleMessage("")
+        beginConsoleInput()
+      } else if (val.split(" ")[0] == "get-random"){
+        var split = val.split(" ")
+        var min = parseInt(split[1])
+        var max = parseInt(split[2])
+        resetInput()
+        consoleMessage(randomIntFromInterval(min, max))
+        beginConsoleInput()
       } else {
         resetInput()
         consoleMessage("Unknown Command.")
@@ -225,8 +313,8 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function randomIntFromInterval(min, max) { // min and max included 
-  return Math.floor(Math.random() * (max - min + 1) + min)
+function randomIntFromInterval(min, max) {
+  return Math.random() * (max - min) + min;
 }
 
 function resetInput(){
@@ -271,19 +359,31 @@ function beginConsoleInput(){
   newInput.spellcheck = false
   newInput.style.marginBottom = "0px"
   newInput.style.outline = "none"
+  newInput.scrollIntoView()
 }
 
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
 
+function getRandomDate(start, end) {
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}
 
+function getRandomString(length) {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
+  for (var i = 0; i < length; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
 
-
-
-
-
-
-
-
+  return text;
+}
 
 
 class Calculator {

@@ -115,20 +115,22 @@ async function consoleEnter(event){
         beginConsoleInput()
       } else if (val == "help"){
         resetInput()
-        // print all the commands with their descriptions and arguments
-        consoleMessage("Commands:")
-        consoleMessage("help - shows this message")
-        consoleMessage("print <text> - prints text to the console")
-        consoleMessage("echo <text> - prints text to the console")
-        consoleMessage("clear - clears local storage")
-        consoleMessage("get-ls-data - gets data from local storage")
-        consoleMessage("refresh - refreshes the page")
-        consoleMessage("hacker - makes the console output a random number every 10 seconds")
-        consoleMessage("temp-new-tab <link> <time> - opens a new tab for the link for the time specified in minutes")
-        consoleMessage("virus - closes the tab")
-        consoleMessage("ide - opens the python IDE")
-        consoleMessage("code - opens the python IDE")
-        consoleMessage("python - opens the python IDE")
+        // print all the commands with their descriptions and argument
+        consoleMessage("<b>Commands:</b>")
+        consoleMessage("<b>help</b> - Prints this message.")
+        consoleMessage("<b>clear</b> - Clears local storage.")
+        consoleMessage("<b>get-ls-data</b> - Prints local storage data.")
+        consoleMessage("<b>refresh</b> - Refreshes the page.")
+        consoleMessage("<b>temp-new-tab [link] [minutes]</b> - Opens a new tab for a specified amount of time.")
+        consoleMessage("<b>print | echo [string]</b> - Prints the argument.")
+        consoleMessage("<b>ide | code | python</b> - Opens a python IDE.")
+        consoleMessage("<b>open [link]</b> - Opens specified link.")
+        consoleMessage("<b>count [string]</b> - Counts words and chars in [string].")
+        consoleMessage("<b>add | subtract | multiply | divide | sqrt [numbers]</b> - Does the operation to the numbers.")
+        consoleMessage("<b>list-add [increment] [iterations]</b> - Continuously adds [increment] to until [iterations].")
+        consoleMessage("<b>setstoragekey | getstoragekey | clearstoragekey [key] [value]</b> - Gets, sets, or clears specified key.")
+        consoleMessage("<b>random-element | random-string | random-color | random-image | random-uuid [chars]</b> - Gets a random ____.")
+
         beginConsoleInput()
       } else if (val.split(" ")[0] == "open"){
         var link = val.split(" ")[1]
@@ -136,8 +138,7 @@ async function consoleEnter(event){
           link = "https://" + link
         }
         window.location.href = link
-      } else if (val.split(" ")[0] == "words"){
-        // print the amount of words and characters in all the next arguments
+      } else if (val.split(" ")[0] == "count"){
         var splitted = val.split(" ")
         var built = "";
         for (var i = 1; i < splitted.length; i++){
@@ -202,7 +203,6 @@ async function consoleEnter(event){
         }
         beginConsoleInput()
       }  else if (val.split(" ")[0] == "hack"){
-        // hack the website
         var splitted = val.split(" ")
         var built = ""
         for (var i = 1; i < splitted.length; i++){
@@ -224,7 +224,6 @@ async function consoleEnter(event){
           await window.open('https://i1.sndcdn.com/avatars-9URsF3lojdMu57Tw-Pnwj3Q-t500x500.jpg')
         }
       } else if (val.split(" ")[0] == "setstoragekey"){
-        // Command to set a localStorage item
         var split = val.split(" ")
         var key = split[1]
         var val = split[2]
@@ -233,14 +232,12 @@ async function consoleEnter(event){
         consoleMessage("Set " + key + " to " + val + ".")
         beginConsoleInput()
       } else if (val.split(" ")[0] == "clearstoragekey"){
-        // Command to clear a localStorage item
         var key = val.split(" ")[1]
         localStorage.removeItem(key)
         resetInput()
         consoleMessage("Cleared " + key + ".")
         beginConsoleInput()
       } else if (val.split(" ")[0] == "getstoragekey"){
-        // Command to get a localStorage item
         var key = val.split(" ")[1]
         resetInput()
         consoleMessage(localStorage.getItem(key))
@@ -254,52 +251,57 @@ async function consoleEnter(event){
         consoleMessage("Getting free Robux...")
         await sleep(3000)
         consoleMessage("Success!")
-        consoleMessage("")
-        consoleMessage("Robux: " + randomIntFromInterval(1, 1000000))
-        consoleMessage("")
+        consoleMessage("<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\"></iframe>")
         beginConsoleInput()
       } else if (val == "./get-free-vbucks"){
         resetInput()
         consoleMessage("Getting free V-Bucks...")
         await sleep(3000)
         consoleMessage("Success!")
-        consoleMessage("")
-        consoleMessage("V-Bucks: " + randomIntFromInterval(1, 1000000))
-        consoleMessage("")
+        consoleMessage("<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\"></iframe>")
         beginConsoleInput()
       } else if (val == "./get-free-diamonds"){
         resetInput()
         consoleMessage("Getting free Diamonds...")
         await sleep(3000)
         consoleMessage("Success!")
-        consoleMessage("")
-        consoleMessage("Diamonds: " + randomIntFromInterval(1, 1000000))
-        consoleMessage("")
+        consoleMessage("<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\"></iframe>")
         beginConsoleInput()
-      } else if (val == "./get-free-coins"){
-        resetInput()
-        consoleMessage("Getting free Coins...")
-        await sleep(3000)
-        consoleMessage("Success!")
-        consoleMessage("")
-        consoleMessage("Coins: " + randomIntFromInterval(1, 1000000))
-        consoleMessage("")
-        beginConsoleInput()
-      } else if (val == "./get-free-tokens"){
-        resetInput()
-        consoleMessage("Getting free Tokens...")
-        await sleep(3000)
-        consoleMessage("Success!")
-        consoleMessage("")
-        consoleMessage("Tokens: " + randomIntFromInterval(1, 1000000))
-        consoleMessage("")
-        beginConsoleInput()
-      } else if (val.split(" ")[0] == "get-random"){
+      } else if (val.split(" ")[0] == "random"){
         var split = val.split(" ")
         var min = parseInt(split[1])
         var max = parseInt(split[2])
         resetInput()
         consoleMessage(randomIntFromInterval(min, max))
+        beginConsoleInput()
+      } else if (val.split(" ")[0] == "random-element"){
+        resetInput()
+        consoleMessage(getRandomElement())
+        beginConsoleInput()
+      } else if (val.split(" ")[0] == "random-string"){
+        resetInput()
+        consoleMessage(getRandomString(val.split(" ")[1]))
+        beginConsoleInput()
+      } else if (val.split(" ")[0] == "random-color"){
+        resetInput()
+        var color = getRandomColor()
+        var mess = consoleMessage(color)
+        mess.style.color = color
+        beginConsoleInput()
+      } else if (val.split(" ")[0] == "random-number-game"){
+        resetInput()
+        randomNumberGame()
+        beginConsoleInput()
+        // generate random image
+      } else if (val.split(" ")[0] == "random-image"){
+        resetInput()
+        consoleMessage(getRandomImage(val.split(" ")[1], val.split(" ")[2]))
+        beginConsoleInput()
+      } else if (val.split(" ")[0] == "random-uuid"){
+        resetInput()
+        var uuid = generateUUID()
+        consoleMessage(uuid)
+        consoleMessage("<a href='https://namemc.com/profile/" + uuid + "'>Click to view NameMC profile with this UUID</a>")
         beginConsoleInput()
       } else {
         resetInput()
@@ -314,7 +316,7 @@ function sleep(ms) {
 }
 
 function randomIntFromInterval(min, max) {
-  return Math.random() * (max - min) + min;
+  return Math.round(Math.random() * (max - min) + min);
 }
 
 function resetInput(){
@@ -337,7 +339,7 @@ function consoleMessage(message){
 
 function beginConsoleInput(){
   const newPreInput = document.createElement("p")
-  newPreInput.innerHTML = "dev> "
+  newPreInput.innerHTML = "dev>\u00A0 "
   newPreInput.class = "console-outputted"
   newPreInput.style.display = "inline-block"
   newPreInput.style.marginBottom = "0px"
@@ -377,7 +379,7 @@ function getRandomDate(start, end) {
 
 function getRandomString(length) {
   var text = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`!@#$%^&*()-=[];',./~_+{}|:<>?    ";
 
   for (var i = 0; i < length; i++)
     text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -385,160 +387,82 @@ function getRandomString(length) {
   return text;
 }
 
+// Pick a random element from the DOM
+function getRandomElement() {
+  var elements = document.querySelectorAll("*");
+  return elements[Math.floor(Math.random() * elements.length)].outerHTML;
+}
 
-class Calculator {
-    constructor(previousOperandTextElement, currentOperandTextElement) {
-      this.previousOperandTextElement = previousOperandTextElement
-      this.currentOperandTextElement = currentOperandTextElement
-      this.clear()
-    }
-  
-    clear() {
-      this.currentOperand = ''
-      this.previousOperand = ''
-      this.operation = undefined
-    }
-  
-    delete() {
-      this.currentOperand = this.currentOperand.toString().slice(0, -1)
-    }
-  
-    appendNumber(number) {
-      if (number === '.' && this.currentOperand.includes('.')) return
-      this.currentOperand = this.currentOperand.toString() + number.toString()
-    }
-  
-    chooseOperation(operation) {
-      if (this.currentOperand === '') return
-      if (this.previousOperand !== '') {
-        this.compute()
-      }
-      this.operation = operation
-      this.previousOperand = this.currentOperand
-      this.currentOperand = ''
-    }
-  
-    compute() {
-      let computation
-      const prev = parseFloat(this.previousOperand)
-      const current = parseFloat(this.currentOperand)
-      if (isNaN(prev) || isNaN(current)) return
-      switch (this.operation) {
-        case '+':
-          computation = prev + current
-          break
-        case '-':
-          computation = prev - current
-          break
-        case '*':
-          computation = prev * current
-          break
-        case '÷':
-          computation = prev / current
-          break
-        default:
-          return
-      }
-      this.currentOperand = computation
-      this.operation = undefined
-      this.previousOperand = ''
-    }
-  
-    getDisplayNumber(number) {
-      const stringNumber = number.toString()
-      const integerDigits = parseFloat(stringNumber.split('.')[0])
-      const decimalDigits = stringNumber.split('.')[1]
-      let integerDisplay
-      if (isNaN(integerDigits)) {
-        integerDisplay = ''
-      } else {
-        integerDisplay = integerDigits.toLocaleString('en', { maximumFractionDigits: 0 })
-      }
-      if (decimalDigits != null) {
-        return `${integerDisplay}.${decimalDigits}`
-      } else {
-        return integerDisplay
-      }
-    }
-  
-    updateDisplay() {
-      this.currentOperandTextElement.innerText =
-        this.getDisplayNumber(this.currentOperand)
-      if (this.operation != null) {
-        this.previousOperandTextElement.innerText =
-          `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`
-      } else {
-        this.previousOperandTextElement.innerText = ''
-      }
-    }
+// generate a random image made of pixels
+function getRandomImage(width, height) {
+  var canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  var ctx = canvas.getContext("2d");
+  var imageData = ctx.getImageData(0, 0, width, height);
+  var data = imageData.data;
+  var r, g, b, a;
+  for (var i = 0, n = data.length; i < n; i += 4) {
+    r = Math.floor(Math.random() * 256);
+    g = Math.floor(Math.random() * 256);
+    b = Math.floor(Math.random() * 256);
+    a = 256;
+    data[i] = r;
+    data[i + 1] = g;
+    data[i + 2] = b;
+    data[i + 3] = a;
   }
-  
-  
-  const numberButtons = document.querySelectorAll('[data-number]')
-  const operationButtons = document.querySelectorAll('[data-operation]')
-  const equalsButton = document.querySelector('[data-equals]')
-  const deleteButton = document.querySelector('[data-delete]')
-  const allClearButton = document.querySelector('[data-all-clear]')
-  const previousOperandTextElement = document.querySelector('[data-previous-operand]')
-  const currentOperandTextElement = document.querySelector('[data-current-operand]')
-  
-  const calculator = new Calculator(previousOperandTextElement, currentOperandTextElement)
-  
-  numberButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      calculator.appendNumber(button.innerText)
-      calculator.updateDisplay()
-    })
-  })
-  
-  operationButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      calculator.chooseOperation(button.innerText)
-      calculator.updateDisplay()
-    })
-  })
-  
-  equalsButton.addEventListener('click', button => {
-    calculator.compute()
-    calculator.updateDisplay()
-  })
-  
-  allClearButton.addEventListener('click', button => {
-    calculator.clear()
-    calculator.updateDisplay()
-  })
-  
-  deleteButton.addEventListener('click', button => {
-    calculator.delete()
-    calculator.updateDisplay()
-  })
-  
-  document.addEventListener('keydown', function (event) {
-    let patternForNumbers = /[0-9]/g;
-    let patternForOperators = /[+\-*\/]/g
-    if (event.key.match(patternForNumbers)) {
-      calculator.appendNumber(event.key)
-      calculator.updateDisplay()
+  ctx.putImageData(imageData, 0, 0);
+  var img = document.createElement("img")
+  img.src = canvas.toDataURL();
+  return img.outerHTML;
+}
+
+// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+// A random number game where a bot will guess a number between 1 and 100
+function randomNumberGame(){
+  var number = randomIntFromInterval(1, 100)
+  var botGuess = randomIntFromInterval(1, 100)
+  var guess = botGuess
+  var tries = 0
+  while (guess != number){
+    tries++
+    consoleMessage("Bot: " + botGuess)
+    if (guess > number){
+      botGuess--
+      consoleMessage("Game: Too High!")
+    } else if (guess < number){
+      consoleMessage("Game: Too Low!")
+      botGuess++
     }
-    if (event.key === '.') {
-      calculator.appendNumber(event.key)
-      calculator.updateDisplay()
-    }
-    if (event.key.match(patternForOperators)) {
-      calculator.chooseOperation(event.key)
-      calculator.updateDisplay()
-    }
-    if (event.key === 'Enter' || event.key === '=') {
-      calculator.compute()
-      calculator.updateDisplay()
-    }
-    if (event.key === "Backspace") {
-      calculator.delete()
-      calculator.updateDisplay()
-    }
-    if (event.key == 'Delete') {
-      calculator.clear()
-      calculator.updateDisplay()
-    }
-  
-  });
+    guess = botGuess
+  }
+  consoleMessage("")
+  consoleMessage("Bot guessed the number in " + tries + " tries.")
+  consoleMessage("")
+}
+
+function generateUUID() {
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+}

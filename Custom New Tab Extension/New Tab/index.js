@@ -113,25 +113,6 @@ async function consoleEnter(event){
         newTab.close()
         consoleMessage("Times up!")
         beginConsoleInput()
-      } else if (val == "help"){
-        resetInput()
-        // print all the commands with their descriptions and argument
-        consoleMessage("<b>Commands:</b>")
-        consoleMessage("<b>help</b> - Prints this message.")
-        consoleMessage("<b>clear</b> - Clears local storage.")
-        consoleMessage("<b>get-ls-data</b> - Prints local storage data.")
-        consoleMessage("<b>refresh</b> - Refreshes the page.")
-        consoleMessage("<b>temp-new-tab [link] [minutes]</b> - Opens a new tab for a specified amount of time.")
-        consoleMessage("<b>print | echo [string]</b> - Prints the argument.")
-        consoleMessage("<b>ide | code | python</b> - Opens a python IDE.")
-        consoleMessage("<b>open [link]</b> - Opens specified link.")
-        consoleMessage("<b>count [string]</b> - Counts words and chars in [string].")
-        consoleMessage("<b>add | subtract | multiply | divide | sqrt [numbers]</b> - Does the operation to the numbers.")
-        consoleMessage("<b>list-add [increment] [iterations]</b> - Continuously adds [increment] to until [iterations].")
-        consoleMessage("<b>setstoragekey | getstoragekey | clearstoragekey [key] [value]</b> - Gets, sets, or clears specified key.")
-        consoleMessage("<b>random-element | random-string | random-color | random-image | random-uuid [chars]</b> - Gets a random ____.")
-
-        beginConsoleInput()
       } else if (val.split(" ")[0] == "open"){
         var link = val.split(" ")[1]
         if (!link.includes("https://")){
@@ -292,7 +273,6 @@ async function consoleEnter(event){
         resetInput()
         randomNumberGame()
         beginConsoleInput()
-        // generate random image
       } else if (val.split(" ")[0] == "random-image"){
         resetInput()
         consoleMessage(getRandomImage(val.split(" ")[1], val.split(" ")[2]))
@@ -303,6 +283,26 @@ async function consoleEnter(event){
         consoleMessage(uuid)
         consoleMessage("<a href='https://namemc.com/profile/" + uuid + "'>Click to view NameMC profile with this UUID</a>")
         beginConsoleInput()
+      } else if (val == "help"){
+        resetInput()
+        consoleMessage("<b>Commands:</b>")
+        consoleMessage("<b>help</b> - Prints this message.")
+        consoleMessage("<b>clear</b> - Clears the localStorage.")
+        consoleMessage("<b>clearstoragekey [key]</b> - Clears a key from local storage.")
+        consoleMessage("<b>getstoragekey [key]</b> - Gets a key from local storage.")
+        consoleMessage("<b>setstoragekey [key] [val]</b> - Sets a key in local storage.")
+        consoleMessage("<b>random [min] [max]</b> - Generates a random number between two numbers.")
+        consoleMessage("<b>random-element</b> - Gets a random element from the DOM.")
+        consoleMessage("<b>random-string [length]</b> - Generates a random string of a certain length.")
+        consoleMessage("<b>random-color</b> - Generates a random color.")
+        consoleMessage("<b>random-number-game</b> - Starts a random number game.")
+        consoleMessage("<b>random-image [width px] [height px]</b> - Generates a random image.")
+        consoleMessage("<b>random-uuid</b> - Generates a random UUID.")
+        beginConsoleInput()
+      } else if (val == "money-game"){
+        resetInput()
+        var game = new MoneyGame()
+        game.start()
       } else {
         resetInput()
         consoleMessage("Unknown Command.")
@@ -390,7 +390,9 @@ function getRandomString(length) {
 // Pick a random element from the DOM
 function getRandomElement() {
   var elements = document.querySelectorAll("*");
-  return elements[Math.floor(Math.random() * elements.length)].outerHTML;
+  var element = elements[Math.floor(Math.random() * elements.length)].outerHTML.toString()
+  console.log(element)
+  return element;
 }
 
 // generate a random image made of pixels
@@ -465,4 +467,91 @@ function generateUUID() {
   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
     (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
   );
+}
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+class MoneyGame {
+  constructor() {
+    this.money = 0
+    this.money_per_enter = 1
+    this.money_per_second = 0
+
+    this.buyable_items = [
+      new Item("Printer", 10, "Prints another dollar every enter.", 0),
+      new Item("Printer-3000", 1000, "Gain another dollar every second.", 0),
+    ]
+  }
+
+  start(){
+    consoleMessage("Welcome to the Money Game!")
+    consoleMessage("Money: " + numberWithCommas(this.money))
+    consoleMessage("")
+    consoleMessage("You can earn money by pressing enter.")
+    consoleMessage("To get to the store, type 'store'.")
+    beginConsoleInput()
+    document.getElementById("recent").removeEventListener("keydown", consoleEnter)
+    document.getElementById("recent").addEventListener("keydown", this.entered)
+  }
+
+  buy(item){
+    if (this.money >= item.cost){
+      this.money -= item.cost
+      item.amount++
+      item.cost = Math.floor(item.cost * 1.5)
+      consoleMessage("You bought " + item.name + " for $" + numberWithCommas(item.cost) + ".")
+    } else {
+      consoleMessage("You don't have enough money to buy " + item.name + ".")
+    }
+  }
+
+  entered(val){
+    if (val == "store"){
+      consoleMessage("")
+      consoleMessage("Store")
+      consoleMessage("")
+      for (var i = 0; i < this.buyable_items.length; i++){
+        var item = this.buyable_items[i]
+        consoleMessage(item.name + ": $" + numberWithCommas(item.cost) + " - " + item.description)
+      }
+      consoleMessage("")
+      consoleMessage("To buy an item, type 'buy <item name>'.")
+      beginConsoleInput()
+    } if (val == "exit"){
+      consoleMessage("")
+      consoleMessage("You exited the store.")
+      consoleMessage("")
+      beginConsoleInput()
+    } else if (val.startsWith("buy ")) {
+      var name = val.substring(4)
+      var item = this.buyable_items.find(i => i.name == name)
+      if (item != undefined){
+        this.buy(item)
+      } else {
+        consoleMessage("You can't buy " + name + ".")
+      }
+    } else {
+      this.money += this.money_per_enter
+      consoleMessage("You earned $" + numberWithCommas(this.money_per_enter) + ". You now have $" + numberWithCommas(this.money) + ".")
+    }
+
+    document.getElementById("recent").addEventListener("keydown", this.entered)
+  }
+
+  async updateMoneyPerSecond(){
+    this.money += this.money_per_second
+    await sleep(1000)
+    this.updateMoneyPerSecond()
+  }
+}
+
+class Item {
+  constructor(name, cost, description, amount) {
+    this.name = name
+    this.cost = cost
+    this.description = description
+    this.amount = amount
+  }
 }

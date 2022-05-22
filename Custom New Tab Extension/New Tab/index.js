@@ -11,6 +11,121 @@ document.onreadystatechange = function () {
         }
 
         document.getElementsByClassName("notepad")[0].value = localStorage.getItem("note")
+
+        var new_body = document.createElement("body");
+        new_body.style = "display: block !important;";
+        new_body.id = "new_body";
+        new_body.style = "width: 0px !important;";
+        document.documentElement.appendChild(new_body);
+        var command_bar = document.createElement("auto-extension-command-bar");
+        command_bar.id = "commands-auto-extension";
+        command_bar.contentEditable = true
+        command_bar.style = "border-style: solid !important; color: white !important; resize: none !important; width: 1200px !important; background-color: rgb(105, 105, 105) !important; font-size: 40px !important; border-width: 2px !important; border-color: rgb(9, 141, 255) !important; top: 20px !important; position: fixed !important; left: 20px !important; display: none !important; border-radius: 5px 5px 0px 0px !important; z-index: 9999999 !important; padding: 10px !important; line-height: 48px !important; overflow: hidden !important; box-sizing: unset !important; height: 50px !important;";
+        var style = new_body.appendChild(document.createElement("style"));
+        style.innerHTML = "#commands-auto-extension:focus { outline: none !important; border: 2px solid rgb(9, 141, 255); }";
+        var back = document.createElement("div");
+        back.style = "position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 9999999; display: none;";
+        var preview = document.createElement("auto-extension-preview-element");
+        preview.id = "preview-auto-extension";
+        preview.contentEditable = false
+        preview.disabled = true 
+        preview.style = "-webkit-box-sizing: unset !important; border-style: solid !important; color: white !important; resize: none !important; width: 1200px !important; background-color: rgb(105, 105, 105) !important; font-size: 40px !important; border-width: 2px !important; border-color: rgb(120, 120, 120) rgb(9, 141, 255) rgb(9, 141, 255) !important; top: 89px !important; position: fixed !important; left: 20px !important; display: none !important; border-radius: 0px 0px 5px 5px !important; z-index: 9999999 !important; font-family: consolas !important; padding: 10px !important; line-height: 45px !important; overflow: hidden !important; box-shadow: none !important; user-select: none !important; box-sizing: unset !important; height: 50px !important;";
+        new_body.prepend(preview);
+        new_body.prepend(command_bar);
+        new_body.prepend(back);
+
+        command_bar.addEventListener("keydown", function(e) {
+          if (e.which == 13) {
+              var command = command_bar.innerHTML;
+              e.preventDefault();
+      
+              if (command.startsWith(":")){
+                  command = command.substring(1);
+                  command.replace(" ", "");
+                  if (!command.includes("https://") || !command.includes("http://") || !command.includes("edge://") || !command.includes("file://") || !command.includes("chrome://")){
+                      command = "https://" + command;
+                  }
+                  document.location.href = command;
+              } else if (command.startsWith("+")){
+                  command = command.substring(1);
+                  command.replace(" ", "");
+                  if (!command.includes("https://") || !command.includes("http://") || !command.includes("edge://") || !command.includes("file://") || !command.includes("chrome://")){
+                      command = "https://" + command;
+                  }
+                  if (command == "") {
+                      window.open("edge://newtab")
+                  } else {
+                      window.open(command);
+                  }
+              } else if (command.startsWith("=")){
+                  command = command.substring(1);
+                  window.open("https://google.com/search?q=" + command);
+              } else if (command.toLowerCase() == "refresh" || command.toLowerCase() == "reload" || command.toLowerCase() == "r"){
+                  document.location.reload();
+              } else if (command.startsWith("def")){
+                  command = command.substring(3);
+                  command.replace(" ", "");
+                  window.open("https://www.dictionary.com/browse/" + command);
+              } else if (command.startsWith("syn")){
+                  command = command.substring(3);
+                  command.replace(" ", "");
+                  window.open("https://www.thesaurus.com/browse/" + command);
+              } 
+      
+              if (preview.innerHTML != "Command not found"){
+                  command_bar.innerHTML = "";
+                  command_bar.style.display = "none";
+                  back.style.display = "none";
+                  preview.style.display = "none";
+                  document.activeElement.blur();
+              }
+          }
+      });
+      
+      setInterval(function(){
+          var command = command_bar.innerHTML;
+      
+          if (command.startsWith(":")){
+              preview.innerHTML = "Go to " + command.substring(1);
+          } else if (command.startsWith("+")){
+              preview.innerHTML = "Open " + command.substring(1);
+          } else if (command.startsWith("=")){
+              preview.innerHTML = "Search " + command.substring(1);
+          } else if (command.toLowerCase() == "refresh" || command.toLowerCase() == "reload" || command.toLowerCase() == "r"){
+              preview.innerHTML = "Reload Page";
+          } else if (command.startsWith("def")){
+              preview.innerHTML = "Define " + command.substring(3);
+          } else if (command.startsWith("syn")){
+              preview.innerHTML = "Synonym of " + command.substring(3);
+          } else if (command != ""){
+              preview.innerHTML = "Command not found";
+          } else {
+              preview.innerHTML = "";
+          }
+      }, 50)
+      
+      document.addEventListener("keydown", function(e) {
+          if (e.ctrlKey && e.shiftKey && e.altKey) {
+              if (command_bar.style.display == "none") {
+                  command_bar.style.display = "block";
+                  back.style.display = "block";
+                  preview.style.display = "block";
+                  if (getSelectionText() != "") {
+                      command_bar.innerHTML = "=" + getSelectionText().replace("\\n", " ");
+                  }
+                  command_bar.focus();
+              }
+          }
+      
+          if (e.which == 27) {
+              if (command_bar.style.display == "block") {
+                  command_bar.style.display = "none";
+                  back.style.display = "none";
+                  preview.style.display = "none";
+                  document.activeElement.blur();
+              }
+          }
+      });
     }
 }
 

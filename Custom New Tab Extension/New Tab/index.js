@@ -42,14 +42,14 @@ document.onreadystatechange = function () {
               if (command.startsWith(":")){
                   command = command.substring(1);
                   command.replace(" ", "");
-                  if (!command.includes("https://") || !command.includes("http://") || !command.includes("edge://") || !command.includes("file://") || !command.includes("chrome://")){
+                  if (!command.includes("https://") && !command.includes("http://") && !command.includes("edge://") && !command.includes("file://") && !command.includes("chrome://")){
                       command = "https://" + command;
                   }
                   document.location.href = command;
               } else if (command.startsWith("+")){
                   command = command.substring(1);
                   command.replace(" ", "");
-                  if (!command.includes("https://") || !command.includes("http://") || !command.includes("edge://") || !command.includes("file://") || !command.includes("chrome://")){
+                  if (!command.includes("https://") && !command.includes("http://") && !command.includes("edge://") && !command.includes("file://") && !command.includes("chrome://")){
                       command = "https://" + command;
                   }
                   if (command == "") {
@@ -70,7 +70,11 @@ document.onreadystatechange = function () {
                   command = command.substring(3);
                   command.replace(" ", "");
                   window.open("https://www.thesaurus.com/browse/" + command);
-              } 
+              } else if (command == "bored"){
+                  var options = ["https://en.wikipedia.org/wiki/Special:Random"];
+                  var option = options[Math.floor(Math.random() * options.length)];
+                  document.location.href = option;
+              }
       
               if (preview.innerHTML != "Command not found"){
                   command_bar.innerHTML = "";
@@ -83,26 +87,28 @@ document.onreadystatechange = function () {
       });
       
       setInterval(function(){
-          var command = command_bar.innerHTML;
-      
-          if (command.startsWith(":")){
-              preview.innerHTML = "Go to " + command.substring(1);
-          } else if (command.startsWith("+")){
-              preview.innerHTML = "Open " + command.substring(1);
-          } else if (command.startsWith("=")){
-              preview.innerHTML = "Search " + command.substring(1);
-          } else if (command.toLowerCase() == "refresh" || command.toLowerCase() == "reload" || command.toLowerCase() == "r"){
-              preview.innerHTML = "Reload Page";
-          } else if (command.startsWith("def")){
-              preview.innerHTML = "Define " + command.substring(3);
-          } else if (command.startsWith("syn")){
-              preview.innerHTML = "Synonym of " + command.substring(3);
-          } else if (command != ""){
-              preview.innerHTML = "Command not found";
-          } else {
-              preview.innerHTML = "";
-          }
-      }, 50)
+        var command = command_bar.innerHTML;
+    
+        if (command.startsWith(":")){
+            preview.innerHTML = "Go to " + ((!command.includes("https://") && !command.includes("http://") && !command.includes("edge://") && !command.includes("file://") && !command.includes("chrome://")) ? "https://" : "") + command.substring(1);
+        } else if (command.startsWith("+")){
+            preview.innerHTML = "Open " + ((!command.includes("https://") && !command.includes("http://") && !command.includes("edge://") && !command.includes("file://") && !command.includes("chrome://")) ? "https://" : "") + command.substring(1);
+        } else if (command.startsWith("=")){
+            preview.innerHTML = "Search " + command.substring(1);
+        } else if (command.toLowerCase() == "refresh" || command.toLowerCase() == "reload" || command.toLowerCase() == "r"){
+            preview.innerHTML = "Reload Page";
+        } else if (command.startsWith("def")){
+            preview.innerHTML = "Define " + command.substring(3);
+        } else if (command.startsWith("syn")){
+            preview.innerHTML = "Synonym of " + command.substring(3);
+        } else if (command.startsWith("bored")){
+            preview.innerHTML = "";
+        } else if (command != ""){
+            preview.innerHTML = "Command not found";
+        } else {
+            preview.innerHTML = "";
+        }
+    }, 50)
       
       document.addEventListener("keydown", function(e) {
           if (e.ctrlKey && e.shiftKey && e.altKey) {
@@ -669,4 +675,14 @@ class Item {
     this.description = description
     this.amount = amount
   }
+}
+
+function getSelectionText() {
+  var text = "";
+  if (window.getSelection) {
+      text = window.getSelection().toString();
+  } else if (document.selection && document.selection.type != "Control") {
+      text = document.selection.createRange().text;
+  }
+  return text;
 }
